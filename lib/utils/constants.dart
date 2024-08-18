@@ -9,4 +9,7 @@ class Constants {
   static const String sunmiP2SdkEventChannel = 'sunmi_p2_sdk_event';
 
   static const String printBitmap = 'printBitmap';
+
+  static const String openLed = 'openLed';
+  static const String closeLed = 'closeLed';
 }

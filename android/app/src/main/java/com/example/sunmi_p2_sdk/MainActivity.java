@@ -2,6 +2,8 @@ package com.example.sunmi_p2_sdk;
 
 import androidx.annotation.NonNull;
 
+import com.example.sunmi_p2_sdk.utils.LedColors;
+
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.EventChannel;
@@ -25,7 +27,7 @@ public class MainActivity extends FlutterActivity implements OnConnectCallback, 
     private SunmiSDK sunmiSDK;
     private CardReader cardReader;
     private Printer printer;
-
+    private LampControl lampControl;
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -41,6 +43,7 @@ public class MainActivity extends FlutterActivity implements OnConnectCallback, 
         sunmiSDK = new SunmiSDK(this);
         cardReader = new CardReader(this);
         printer = new Printer(this, this);
+        lampControl=new LampControl();
     }
 
     private void setupMethodChannel(FlutterEngine flutterEngine) {
@@ -65,6 +68,12 @@ public class MainActivity extends FlutterActivity implements OnConnectCallback, 
                     break;
                 case "printBitmap":
                     new Thread(() -> printer.printBitmap(call.argument("bitmap"))).start();
+                    break;
+                case"openLed":
+                    lampControl.onClick(LedColors.valueOf(call.argument("color")), true);
+                    break;
+                case "closeLed":
+                    lampControl.onClick(LedColors.valueOf(call.argument("color")), false);
                     break;
                 default:
                     result.notImplemented();
@@ -134,6 +143,7 @@ public class MainActivity extends FlutterActivity implements OnConnectCallback, 
             runOnUiThread(() -> {
                 sendEvent("KernelConnected");
                 cardReader.setReadCardOptV2(kernel.mReadCardOptV2);
+                lampControl.setBasicOptV2(kernel.mBasicOptV2);
                 if (result != null) {
                     result.success(true);
                     result = null;

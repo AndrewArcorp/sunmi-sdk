@@ -68,4 +68,5 @@ dependencies {
 //    implementation 'com.sunmi:sunmiui:1.1.27'
     implementation 'com.sunmi:printerlibrary:1.0.15'
     implementation 'com.sunmi:PayLib-release:2.0.14'
+    implementation 'androidx.annotation:annotation-jvm:1.7.1'
 }
